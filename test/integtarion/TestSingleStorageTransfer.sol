@@ -9,7 +9,7 @@ import "../../contracts/tests/VerifierRegistry.sol";
 
 import "../../contracts/interfaces/IContractRegistry.sol";
 import "../../contracts/interfaces/IRegistrable.sol";
-import "../../contracts/storageStrategy/interfaces/IStorageStrategy.sol";
+import "../../contracts/strategies/interfaces/IStorageStrategy.sol";
 import "../../contracts/ContractRegistry.sol";
 
 contract TestSingleStorageTransfer {

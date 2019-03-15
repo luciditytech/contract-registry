@@ -2,8 +2,8 @@ pragma solidity 0.5.0;
 
 import "./Registrable.sol";
 import "../storage/interfaces/IStorageBase.sol";
-import "../storageStrategy/interfaces/IStorageStrategy.sol";
-import "../storageStrategy/SingleStorageStrategy.sol";
+import "../strategies/interfaces/IStorageStrategy.sol";
+import "../strategies/SingleStorageStrategy.sol";
 
 contract RegistrableWithSingleStorage is Registrable, SingleStorageStrategy {
 

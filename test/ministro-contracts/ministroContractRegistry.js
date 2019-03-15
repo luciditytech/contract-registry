@@ -4,8 +4,6 @@ const { bytes32ToString, areAddressesEqual, isContractKilled } = require('../hel
 
 const Registrable = artifacts.require('RegistrableInstance');
 
-console.log(fromAscii("VerifierRegistry"));
-
 function MinistroContract() {
   const app = {};
 
