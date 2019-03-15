@@ -3,8 +3,8 @@ pragma solidity ^0.5.0;
 import "truffle/Assert.sol";
 import "../../contracts/storage/interfaces/IStorageBase.sol";
 import "../../contracts/storage/StorageBase.sol";
-import "../../contracts/storageStrategy/interfaces/IStorageStrategy.sol";
-import "../../contracts/storageStrategy/SingleStorageStrategy.sol";
+import "../../contracts/strategies/interfaces/IStorageStrategy.sol";
+import "../../contracts/strategies/SingleStorageStrategy.sol";
 
 contract TestSingleStorageStrategy {
 
