@@ -5,6 +5,7 @@ import "../helpers/Suicidal.sol";
 import "../storage/interfaces/IStorageBase.sol";
 
 contract SingleStorageStrategy is IStorageStrategy, Suicidal {
+  address private _deployer;
 
   IStorageBase public singleStorage;
 
@@ -14,10 +15,22 @@ contract SingleStorageStrategy is IStorageStrategy, Suicidal {
   );
 
   event LogNewStorage(IStorageBase indexed storageAddress);
+  event LogUpdateSingleStorage(IStorageBase indexed storageAddress);
 
   constructor (IStorageBase _storage) public {
     require(address(_storage) != address(0x0), "storage can't be empty");
     singleStorage = _storage;
+    _deployer = msg.sender;
+  }
+
+  function updateSingleStorage(IStorageBase _storage)
+  external {
+    require(_deployer == msg.sender, "only deployer can update storage address");
+    require(address(_storage) != address(0x0), "storage can't be empty");
+    require(singleStorage != _storage, "addresses are the same");
+
+    singleStorage = _storage;
+    emit LogUpdateSingleStorage(_storage);
   }
 
   function getAllStorages()

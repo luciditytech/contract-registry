@@ -13,11 +13,12 @@ const {
 contract('SingleStorageStrategy', async (accounts) => {
   let ministroSingleStorageStrategy;
   const deployer = accounts[0];
-  let deployedStorage;
+  let invalidStorage;
+  let validStorage;
 
   describe('when storage is deployed', async () => {
     before(async () => {
-      ({ instance: deployedStorage } = await deployStorageBase());
+      ({ instance: invalidStorage } = await deployStorageBase());
     });
 
     it('should not be possible to deploy without providing storage', async () => {
@@ -29,15 +30,29 @@ contract('SingleStorageStrategy', async (accounts) => {
       }
     });
 
-    describe('when storage strategy is deployed', async () => {
+    describe('when storage strategy is deployed with invalid storage address', async () => {
       before(async () => {
         ({
           ministro: ministroSingleStorageStrategy,
-        } = await deploySingleStorageStrategy(deployer, deployedStorage.address));
+        } = await deploySingleStorageStrategy(deployer, invalidStorage.address));
+
+        ({ instance: validStorage } = await deployStorageBase());
       });
 
-      it('should have valid initial storage', async () => {
-        assert(areAddressesEqual(await ministroSingleStorageStrategy.singleStorage(), deployedStorage.address), 'invalid singleStorage');
+      it('should have valid initial storage address', async () => {
+        assert(areAddressesEqual(await ministroSingleStorageStrategy.singleStorage(), invalidStorage.address), 'invalid initial storage address');
+      });
+
+      it('should NOT be possible to update single storage address by not a deployer', async () => {
+        await ministroSingleStorageStrategy.updateSingleStorage(
+          validStorage.address,
+          { from: accounts[1] },
+          true,
+        );
+      });
+
+      it('should be possible to update single storage by deployer', async () => {
+        await ministroSingleStorageStrategy.updateSingleStorage(validStorage.address);
       });
 
       it('should be possible to get list of storages', async () => {
