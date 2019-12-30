@@ -31,6 +31,24 @@ function MinistroContract() {
     return results;
   };
 
+  app.updateSingleStorage = async (storageAddr, txAttr, expectThrow) => {
+    const txAttrLocal = app.getTxAttr(txAttr);
+
+    const action = () => app.instance.updateSingleStorage(storageAddr, txAttrLocal);
+
+    const results = await app.executeAction(action, txAttrLocal, 1, 'LogUpdateSingleStorage', expectThrow);
+
+    if (!expectThrow) {
+      assert.exists(results.LogUpdateSingleStorage, 'missing LogUpdateSingleStorage event');
+      const [{ storageAddress }] = results.LogUpdateSingleStorage;
+
+      assert(areAddressesEqual(storageAddress, storageAddr), 'invalid storageAddress');
+      assert(areAddressesEqual(storageAddress, await app.singleStorage()), 'invalid singleStorage');
+    }
+
+    return results;
+  };
+
   app.getAllStorages = async () => {
     const list = await app.instance.getAllStorages.call();
     assert.strictEqual(list.length, 1, 'Single storage should have one storage');
